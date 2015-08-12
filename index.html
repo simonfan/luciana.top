@@ -1,0 +1,171 @@
+<html>
+  <head>
+    
+    <meta charset="utf-8">
+    
+    <style>
+      
+      body {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        
+        cursor: none;
+        
+        -webkit-touch-callout: none;
+        -webkit-user-select: none;
+        -khtml-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+      }
+      
+      #cake-container {
+        
+        text-align: center;
+      }
+    
+      .cake {
+        font-size: 40px;
+        
+        line-height: 0.6;
+        
+        -webkit-transition: all ease .3s;
+        -moz-transition: all ease .3s;
+        -o-transition: all ease .3s;
+        transition: all ease .3s;
+      }
+      
+      .cake:hover {
+        -webkit-transform: rotate(360deg);
+        -moz-transform:    rotate(360deg);
+        -ms-transform:     rotate(360deg);
+        -o-transform:      rotate(360deg);
+        transform:         rotate(360deg);
+      }
+      
+      #knife {
+        font-size: 40px;
+        position: absolute;
+        
+        z-index: 10;
+        
+        
+        -webkit-transition: transform ease .1s;
+        -moz-transition: transform ease .1s;
+        -o-transition: transform ease .1s;
+        transition: transform ease .1s;
+      }
+      
+      #knife.ready-to-cut {
+        -webkit-transform: rotate(-10deg);
+        -moz-transform:    rotate(-10deg);
+        -ms-transform:     rotate(-10deg);
+        -o-transform:      rotate(-10deg);
+        transform:         rotate(-10deg);
+      }
+      
+      #top {
+        font-weight: bold;
+        
+        margin-top: 20px;
+      }
+    </style>
+  </head>
+  
+  <body id="body">
+    
+    <div id="knife">
+      &#127860;
+    </div>
+    
+    <div id="cake-container">
+      <div class="cake">&#127856;</div>
+    </div>
+    
+    <script>
+      
+      var body = document.getElementById('body');
+      var cake = document.getElementById('cake-container');
+      var knife = document.getElementById('knife');
+      
+      body.addEventListener('mousemove', function (e) {
+        knife.style.top = parseInt(e.clientY) + 5 + 'px';
+        knife.style.left = parseInt(e.clientX) - 20 + 'px';
+      });
+      
+      cake.addEventListener('mouseover', function (e) {
+        knife.className = 'ready-to-cut';
+      });
+      
+      cake.addEventListener('mouseout', function (e) {
+        knife.className = '';
+      });
+      
+      
+      console.log(cake);
+      
+      
+      
+      var cakeUnicodeChar = '&#127856';
+      var bdayCakeChar    = '&#127874';
+      
+      var totalLineCount = 1;
+      
+      var line = 1;
+      var direction = '>';
+      var finalLine = 4;
+      
+      
+      function cakeLine(qtty) {
+        var l = '';
+        
+        var initial = qtty;
+        
+        while (qtty > 0) {
+          
+          var whichCake = (initial === finalLine + 1) && (qtty === Math.ceil(finalLine/2) + 1) ? bdayCakeChar : cakeUnicodeChar;
+          
+          
+          l += '<span class="cake">' + whichCake + '</span>';
+          
+          qtty -= 1;
+        };
+        
+        return '<div>' + l + '</div>';
+      }
+      
+      function addCakeLine() {
+        
+        totalLineCount += 1;
+        
+        if (direction === '>') {
+          
+        
+          direction = (line === finalLine) ? '<' : '>';
+          line += 1;
+        } else {
+          
+        
+          direction = (line === 2) ? '>' : '<';
+          line -= 1;
+        }
+        
+        
+        
+        if (totalLineCount > 9 ) {
+          return;
+        } else {
+          cake.innerHTML = cakeLine(line) + cake.innerHTML;
+        }
+        
+        console.log(1 - totalLineCount/10);
+        
+        cake.style.fontSize = '!important' + ((1 - totalLineCount/7) * parseInt(cake.style.fontSize)) + 'px';
+      }
+      
+      cake.addEventListener('click', addCakeLine);
+      
+    </script>
+  </body>
+</html>
